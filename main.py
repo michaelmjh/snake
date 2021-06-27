@@ -1,4 +1,7 @@
-from turtle import Turtle, Screen
+from turtle import Screen
+from snake import Snake
+from food import Food
+from scoreboard import Scoreboard
 import time
 
 screen = Screen()
@@ -7,34 +10,23 @@ screen.bgcolor("black")
 screen.title("Snake")
 screen.tracer(0)
 
-snake = []
-x_start = 0
+snake = Snake()
+food = Food()
+scoreboard = Scoreboard()
 
-for segment in range(0, 3):
-    segment = Turtle()
-    segment.shape("square")
-    segment.color("white")
-    segment.penup()
-    segment.setpos(x_start, 0)
-    snake.append(segment)
-    x_start -= 20
-
-
+screen.listen()
+screen.onkey(snake.up, "Up")
+screen.onkey(snake.down, "Down")
+screen.onkey(snake.left, "Left")
+screen.onkey(snake.right, "Right")
 
 game_on = True
 while game_on:
     screen.update()
     time.sleep(0.1)
-    for segment in snake:
-        segment.forward(20)
-
-
-
-
-
-
-
-
-
+    snake.move_snake()
+    if snake.head.distance(food) < 15:
+        food.refresh()
+        scoreboard.add_point()
 
 screen.exitonclick()
